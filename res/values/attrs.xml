@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ICGridLayout">
+        <attr name="columns" format="integer" />
+        <attr name="spacing" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="ICGridLayout_Layout">
+        <attr name="layout_left" format="integer" />
+        <attr name="layout_right" format="integer" />
+        <attr name="layout_top" format="integer" />
+        <attr name="layout_bottom" format="integer" />
+        <attr name="layout_col_span" format="integer" />
+        <attr name="layout_row_span" format="integer" />
+        <attr name="layout_spacing" format="dimension"/>
+        <attr name="layout_horizontal_spacing" format="dimension"/>
+        <attr name="layout_vertical_spacing" format="dimension"/>
+        <attr name="layout_left_spacing" format="dimension"/>
+        <attr name="layout_right_spacing" format="dimension"/>
+        <attr name="layout_top_spacing" format="dimension"/>
+        <attr name="layout_bottom_spacing" format="dimension"/>
+        <attr name="layout_fill_vertical" format="boolean"/>
+        <attr name="layout_fill_horizontal" format="boolean"/>
+    </declare-styleable>
+
+</resources>
