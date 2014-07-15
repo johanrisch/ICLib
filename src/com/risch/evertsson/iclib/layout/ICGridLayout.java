@@ -5,8 +5,6 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RemoteViews.RemoteView;
 
 import com.risch.evertsson.iclib.R;
 
@@ -42,8 +40,8 @@ public class ICGridLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int width = (int) (r - l);
-        int side = Math.round((float) width / mColumns);
+        float width = r - l;
+        float side = width / mColumns;
         int children = getChildCount();
         View child = null;
 
@@ -55,15 +53,15 @@ public class ICGridLayout extends ViewGroup {
             int rSpacing = (int) (lp.rSpacing != -1 ? lp.rSpacing : mSpacing);
             int tSpacing = (int) (lp.tSpacing != -1 ? lp.tSpacing : mSpacing);
             int bSpacing = (int) (lp.bSpacing != -1 ? lp.bSpacing : mSpacing);
-            int left = (lp.left * side + lSpacing);
+            int left = Math.round(lp.left * side + lSpacing);
             int right = r;
-            int top = (lp.top * side + tSpacing);
+            int top = Math.round(lp.top * side + tSpacing);
             int bottom = b;
             if (!lp.fillHorizontal) {
-                right = (lp.right * side - rSpacing);
+                right = Math.round(lp.right * side - rSpacing);
             }
             if (!lp.fillVertical) {
-                bottom = (lp.bottom * side - bSpacing);
+                bottom = Math.round(lp.bottom * side - bSpacing);
             }
             child.layout(left, top, right, bottom);
         }
@@ -72,13 +70,12 @@ public class ICGridLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         doMeasure(widthMeasureSpec, heightMeasureSpec);
-
     }
 
     private void doMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int width = 0;
-        int height = MeasureSpec.getSize(heightMeasureSpec);
+        float width = 0;
+        float height = MeasureSpec.getSize(heightMeasureSpec);
         // As of now we do not support horizontal scrolling. Thus we require a
         // set size for our layout width.
         if (widthMode == MeasureSpec.AT_MOST || widthMode == MeasureSpec.EXACTLY) {
@@ -90,7 +87,7 @@ public class ICGridLayout extends ViewGroup {
 
         View child = null;
         int row = 0;
-        int side = width / mColumns;
+        float side = width / mColumns;
         int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             child = getChildAt(i);
@@ -104,8 +101,9 @@ public class ICGridLayout extends ViewGroup {
             }
         }
         height = row * side;
-        setMeasuredDimension(resolveSize(width, widthMeasureSpec),
-                resolveSize(height, heightMeasureSpec));
+	setMeasuredDimension(
+			resolveSize(Math.round(width), widthMeasureSpec),
+			resolveSize(Math.round(height), heightMeasureSpec));
     }
 
     /**
@@ -118,18 +116,18 @@ public class ICGridLayout extends ViewGroup {
      * @param heightMeasureSpec the parents heightMeasureSpec
      * @param widthMeasureSpec  the parents widthMeasureSpec
      */
-    protected void measureChild(View child, LayoutParams lp, int side, int heightMeasureSpec,
-                                int widthMeasureSpec, int parentWidth, int parentHeight) {
-        int childHeight = parentHeight;
-        int childWidth = parentWidth;
+    protected void measureChild(View child, LayoutParams lp, float side, int heightMeasureSpec,
+                                int widthMeasureSpec, float parentWidth, float parentHeight) {
+        float childHeight = parentHeight;
+        float childWidth = parentWidth;
         if (!lp.fillVertical) {
             childHeight = (lp.bottom - lp.top) * side;
         }
         if (!lp.fillHorizontal) {
             childWidth = (lp.right - lp.left) * side;
         }
-        int heightSpec = getChildMeasureSpec(heightMeasureSpec, 0, childHeight);
-        int widthSpec = getChildMeasureSpec(widthMeasureSpec, 0, childWidth);
+        int heightSpec = getChildMeasureSpec(heightMeasureSpec, 0, Math.round(childHeight));
+        int widthSpec = getChildMeasureSpec(widthMeasureSpec, 0, Math.round(childWidth));
         child.measure(widthSpec, heightSpec);
     }
 
