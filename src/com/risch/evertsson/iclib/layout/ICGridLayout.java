@@ -43,7 +43,7 @@ public class ICGridLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int width = (int) (r - l);
-        int side = width / mColumns;
+        int side = Math.round((float) width / mColumns);
         int children = getChildCount();
         View child = null;
 
